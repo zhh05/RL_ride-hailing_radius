@@ -100,7 +100,7 @@ class KSTest:
         plt.xlabel('Latitude')
         plt.ylabel('CDF')
         plt.title('Latitude CDF Kolmogorov-Smirnov Test')
-        textstr_lat = f'KS Stat (D): {ks_stat_lat:.3f}, p-value: {p_value_lat*100:.3f}'
+        textstr_lat = f'KS Stat (D): {ks_stat_lat:.3f}, p-value: {p_value_lat:.3f}'
         plt.text(
             0.75, 0.065, textstr_lat, transform=plt.gca().transAxes,
             fontsize=12, ha='center', va='top',
@@ -122,7 +122,7 @@ class KSTest:
         plt.xlabel('Longitude')
         plt.ylabel('CDF')
         plt.title('Longitude CDF Kolmogorov-Smirnov Test')
-        textstr_lon = f'KS Stat (D): {ks_stat_lon:.3f}, p-value: {p_value_lon*100:.3f}'
+        textstr_lon = f'KS Stat (D): {ks_stat_lon:.3f}, p-value: {p_value_lon:.3f}'
         plt.text(
             0.75, 0.065, textstr_lon, transform=plt.gca().transAxes,
             fontsize=12, ha='center', va='top',

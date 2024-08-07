@@ -53,7 +53,7 @@ class TestEnvironment:
                 state_, reward, done = self.env.test_step(action_baseline, hr_time, min_max=False)
                 #reward = sum(reward)/self.env.cell_num
                 aver_score.append(aver_score[-1] * 0.99 + reward * 0.01)
-                episode_reward += reward - 0.09
+                episode_reward += reward
                 step += 1
             base_line.append(episode_reward)
         # calculate average
@@ -78,7 +78,7 @@ class TestEnvironment:
                 #reward = sum(reward)/self.env.cell_num
                 aver_score.append(aver_score[-1] * 0.99 + reward * 0.01)
                 state = state_
-                episode_reward += reward + 0.06
+                episode_reward += reward
                 step += 1
             # calculate average
             policy_score.append(episode_reward)
@@ -173,7 +173,6 @@ class TestEnvironment:
         
         rider_counts = np.array([])
         driver_counts = np.array([])
-        radii = np.array([])
 
         while not done and step <= step_num:
             for i in range(self.env.cell_num):
@@ -183,11 +182,8 @@ class TestEnvironment:
             state_, reward, done = self.env.test_step(action, test_time, min_max=True)
             radius = self.ddpg.get_radius(action)
             
-            noise = np.random.normal(0, 0.1)*1000
-            noisy_radius = radius[4] + noise
             rider_counts = np.append(rider_counts, state[4*2])
             driver_counts = np.append(driver_counts, state[4*2+1])
-            radii = np.append(radii, noisy_radius)
             
             self.cell.draw_cell(state, radius)
             state = state_
@@ -213,17 +209,14 @@ class TestEnvironment:
             
             state_, reward, done = self.env.test_step(action, test_time, min_max=True)
             radius = self.ddpg.get_radius(action)
-            
-            radius_noise = np.random.normal(0, 0.1)
-            noisy_radius = radius[4] + radius_noise
+            radius = radius[4]
         
             rider_noise = 0 #np.random.normal(0, 0.01)
             driver_noise = np.random.normal(0, 0.1)
 
-            
             rider_counts = np.append(rider_counts, state[4*2])
             driver_counts = np.append(driver_counts, state[4*2+1])
-            radii = np.append(radii, noisy_radius)
+            radii = np.append(radii, radius)
 
             state = state_
             state[4*2] += rider_noise
@@ -275,13 +268,11 @@ class TestEnvironment:
                 
                 state_, reward, done = self.env.test_step(action, test_time, min_max=True)
                 radius = self.ddpg.get_radius(action)
-                
-                radius_noise = np.random.normal(0, 0.1)
-                noisy_radius = radius[4] + radius_noise
+                radius = radius[4]
 
                 rider_counts = np.append(rider_counts, state[4*2])
                 driver_counts = np.append(driver_counts, state[4*2+1])
-                radii = np.append(radii, noisy_radius)
+                radii = np.append(radii, radius)
                 ratio =  (rider_counts+1e-6)/(driver_counts+1e-6)
 
                 state = state_
